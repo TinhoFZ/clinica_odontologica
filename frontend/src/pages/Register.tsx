@@ -5,13 +5,44 @@ import { registerUser } from '../services/patient';
 import Button from '../components/Button';
 
 export default function Register() {
+    const [phoneAsContact, setPhoneAsContact] = useState(false);
+    const toggle = () => {
+        setPhoneAsContact(prev => !prev);
+        handlePhoneChange();
+    };
+    
     const [name, setName] = useState('');
     const [cpf, setCpf] = useState('');
-    const [phoneNumber, setPhoneNumber] = useState(null);
+    const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [address, setAddress] = useState('');
     const [birthDate, setBirthDate] = useState('');
     const [password, setPassword] = useState('');
+    
+
+    function handlePhoneChange() {
+        if(phoneAsContact) {
+            return (
+                <Input 
+                    value={phoneNumber ?? ''}
+                    placeholder='Número de telefone'
+                    type='tel'
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+            )
+        } else {
+            setPhoneNumber('');
+            return (
+                <Input 
+                    value={email}
+                    placeholder='Email'
+                    type='email'
+                    required
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+            )
+        }
+    }
 
     return (
         <div className='prose'>
@@ -28,7 +59,6 @@ export default function Register() {
                         birthDate
                     });
                 }}
-
             >
                 <h1>Registrar</h1>
                 <Input 
@@ -43,13 +73,9 @@ export default function Register() {
                     required
                     onChange={(e) => setCpf(e.target.value)}
                 />
-                <Input 
-                    value={email}
-                    placeholder='Email'
-                    type='email'
-                    required
-                    onChange={(e) => setEmail(e.target.value)}
-                />
+
+                {handlePhoneChange()}
+                
                 <Input 
                     value={password}
                     placeholder='Senha'
@@ -68,6 +94,12 @@ export default function Register() {
                     placeholder='Data de nascimento'
                     type='date'
                     onChange={(e) => setBirthDate(e.target.value)}
+                />
+
+                <Button
+                    text='Teste'
+                    className='border border-black'
+                    onClick={() => toggle()}
                 />
 
                 <Button
