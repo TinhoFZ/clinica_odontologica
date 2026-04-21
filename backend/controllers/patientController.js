@@ -2,13 +2,13 @@ const conn = require('../db/conn');
 const { logAction, logRequest } = require('../utils/logger');
 
 exports.registerPatient = (req, res) => {
-    const { name, cpf, contact, adress, birth_date } = req.body;
+    const { name, cpf, email, phone_number, password_hash, address, birth_date } = req.body;
     const sql = `
-        INSERT INTO patients (name, cpf, contact, adress, birth_date)
-        VALUES (?, ?, ?, ?, ?)
+        INSERT INTO patients (name, cpf, email, phone_number, password_hash, address, birth_date)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
     `;
 
-    conn.query(sql, [name, cpf, contact, adress, birth_date], (err, result) => {
+    conn.query(sql, [name, cpf, email, phone_number, password_hash, address, birth_date], (err, result) => {
         if (err) {
             console.error("Error registering patient:", err);
             return res.status(500).json({ error: "Error registering patient" });
