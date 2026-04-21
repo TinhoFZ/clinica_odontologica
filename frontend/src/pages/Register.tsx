@@ -31,7 +31,6 @@ export default function Register() {
                 />
             )
         } else {
-            setPhoneNumber('');
             return (
                 <Input 
                     value={email}
