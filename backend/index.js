@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+require('dotenv').config();
 const conn = require('./db/conn');
 
 const app = express();
@@ -15,9 +16,9 @@ app.use('/patients', patientsRoutes);
 const dentistsRoutes = require('./routes/dentists');
 app.use('/dentists', dentistsRoutes);
 
-app.listen(3001, (err) => {
+app.listen(process.env.PORT, (err) => {
     if (err) {
         console.log("Error starting the server:", err);
     }
-    console.log("Server is running on port 3001.");
+    console.log(`Server is running on port ${process.env.PORT}.`);
 });
