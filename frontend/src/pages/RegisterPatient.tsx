@@ -59,7 +59,7 @@ export default function Register() {
                     });
                 }}
             >
-                <h1>Registrar</h1>
+                <h1>Registrar-se como paciente</h1>
                 <Input 
                     value={name}
                     placeholder='Nome completo'

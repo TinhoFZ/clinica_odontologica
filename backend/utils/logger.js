@@ -1,12 +1,13 @@
 const conn = require('../db/conn');
 
-function logAction({ entity_type, entity_id, action }) {
+function logAction({ entityType, entityId, action, status }) {
+    const actionId = crypto.randomUUID();
     const sql = `
-        INSERT INTO action_logs (entity_type, entity_id, action)
-        VALUES (?, ?, ?)
+        INSERT INTO action_logs (action_id, action, entity_type, entity_id, status)
+        VALUES (?, ?, ?, ?, ?)
     `;
 
-    conn.query(sql, [entity_type, entity_id, action], (err) => {
+    conn.query(sql, [actionId, action, entityType, entityId, status], (err) => {
         if (err) {
             console.log('Error in action_log: ', err);
         };

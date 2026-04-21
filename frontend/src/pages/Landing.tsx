@@ -5,9 +5,15 @@ export default function Landing() {
         <>
             <Button
                 link
-                route="/register"
+                route="/register/patient"
                 text="Se registar como paciente"
             />
+            <Button
+                link
+                route="/register/dentist"
+                text="Se registar como dentista"
+            />
+
         </>
     );
 }

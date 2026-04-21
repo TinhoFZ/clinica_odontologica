@@ -2,18 +2,22 @@ CREATE DATABASE clinica_odontologica;
 
 USE clinica_odontologica;
 
- CREATE TABLE dentists(
-	dentist_id INT PRIMARY KEY AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
-    cpf VARCHAR(255) NOT NULL UNIQUE,
-    phone_number VARCHAR(20) NOT NULL UNIQUE
- );
- 
-CREATE TABLE patients(
-	patient_id INT PRIMARY KEY AUTO_INCREMENT,
+CREATE TABLE dentists(
+    dentist_id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(255) NOT NULL,
     cpf VARCHAR(11) NOT NULL UNIQUE,
-	email VARCHAR(255) UNIQUE,
+    cro VARCHAR(20) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password_hash VARCHAR(255) NOT NULL,
+    specialty VARCHAR(255) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL UNIQUE
+);
+ 
+CREATE TABLE patients(
+    patient_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    cpf VARCHAR(11) NOT NULL UNIQUE,
+    email VARCHAR(255) UNIQUE,
     phone_number VARCHAR(20) UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     address VARCHAR(255) NOT NULL,
@@ -36,10 +40,11 @@ CREATE TABLE patients(
 ); 
 
 CREATE TABLE action_logs (
-	action_id BINARY(16) PRIMARY KEY, -- UUID
+	action_id CHAR(36) PRIMARY KEY, -- UUID
+    action VARCHAR(255),
     entity_type ENUM('patient', 'dentist', 'appointment'),
-    entity_id INT NOT NULL,
-	action VARCHAR(255),
+    entity_id INT,
+    status ENUM('SUCCESS', 'ERROR') NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -50,3 +55,7 @@ CREATE TABLE request_logs (
 	status_code INT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+SELECT * FROM patients;
+SELECT * FROM dentists;
+SELECT * FROM action_logs;

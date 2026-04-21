@@ -12,6 +12,9 @@ app.use(express.json());
 const patientsRoutes = require('./routes/patients');
 app.use('/patients', patientsRoutes);
 
+const dentistsRoutes = require('./routes/dentists');
+app.use('/dentists', dentistsRoutes);
+
 app.listen(3001, (err) => {
     if (err) {
         console.log("Error starting the server:", err);

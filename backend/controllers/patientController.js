@@ -10,18 +10,20 @@ exports.registerPatient = (req, res) => {
 
     conn.query(sql, [name, cpf, email, phone_number, password_hash, address, birth_date], (err, result) => {
         if (err) {
-            console.error("Error registering patient:", err);
+            logAction({
+                action: 'ERROR_REGISTERING_PATIENT',
+                entityType: 'patient',
+                entityId: result ? result.insertId : null,
+                status: 'ERROR'
+            });
             return res.status(500).json({ error: "Error registering patient" });
         }
-        return res.status(201).json({ message: "Patient registered successfully" });
-        console.log('req: ', req);
-        console.log('req body: ', req.body);
-        console.log('res: ', res);
-
         logAction({
             action: 'PATIENT_REGISTERED',
-            entity_type: 'patient',
-            entity_id: result.insertId
+            entityType: 'patient',
+            entityId: result.insertId,
+            status: 'SUCCESS'
         });
+        res.status(201).json({ message: "Patient registered successfully", patientId: result.insertId });
     });
 }
