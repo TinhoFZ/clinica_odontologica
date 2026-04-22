@@ -6,6 +6,7 @@ const { logAction } = require('../utils/logAction');
 
 exports.registerPatient = (req, res) => {
     bcrypt.hash(req.body.password_hash, 10, (err, hash) => {
+
         if (err) {
             logAction({
                 requestId: req.requestId,
@@ -31,7 +32,8 @@ exports.registerPatient = (req, res) => {
                     entityType: 'patient',
                     entityId: null,
                     status: 'ERROR'
-                }); 
+                });
+                console.log(err);
                 return res.status(500).json({ error: "Error registering patient" });
             }
             logAction({
@@ -50,6 +52,51 @@ exports.registerPatient = (req, res) => {
                 patientId: result.insertId, 
                 token 
             });
+        });
+    });
+}
+
+exports.loginPatient = (req, res) => {
+    const { cpf, password_hash } = req.body;
+
+    const sql = `
+    SELECT id, password_hash
+    FROM patients
+    WHERE id_patient = ?
+    `
+
+    conn.query(sql, cpf, (err, result) => {
+        bcrypt.compare(password_hash, result[0].password_hash, (err, result) => {
+            console.log(result);
+            console.error(err);
+            if (err) {
+                logAction({
+                    requestId: req.requestId,
+                    action: 'ERROR_AUTHENTICATING_PATIENT',
+                    entityType: 'patient',
+                    entityId: result.insertId,
+                    status: 'ERROR'
+                });
+                return res.status(401).json({ message: "Error authenticating patient"});
+            };
+            if (result) {
+                logAction({
+                    requestId: req.requestId,
+                    action: 'PATIENT_AUTHENTICATED',
+                    entityType: 'patient',
+                    entityId: result.insertId,
+                    status: 'SUCCESS'
+                });
+                return res.status(200).json({ message: "Success authenticating patient"});
+            };
+            logAction({
+                requestId: req.requestId,
+                action: 'PATIENT_AUTHENTICATED',
+                entityType: 'patient',
+                entityId: result.insertId,
+                status: 'SUCCESS'
+            });
+            
         });
     });
 }

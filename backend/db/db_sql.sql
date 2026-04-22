@@ -53,7 +53,7 @@ CREATE TABLE action_logs (
     action VARCHAR(255),
     entity_type ENUM('patient', 'dentist', 'appointment'),
     entity_id INT,
-    status ENUM('SUCCESS', 'ERROR') NOT NULL,
+    status ENUM('SUCCESS', 'USER_ERROR', 'DB_ERROR') NOT NULL,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (request_id) REFERENCES request_logs(request_id)
 );
