@@ -4,7 +4,8 @@ Isso é um simples projeto criando um website de uma clínica odontológica usan
 ## Instalação
 Use Node Package Manager [NPM](https://nodejs.org/en/download) e [Git](https://git-scm.com/install/)
 
-```git clone https://github.com/TinhoFZ/clinica_odontologica
+```
+git clone https://github.com/TinhoFZ/clinica_odontologica
 cd clinica_odontologica
 npm i
 ```
@@ -16,7 +17,8 @@ Será necessário dois CMDs, um para o backend, e um para o frontend, ou, para t
 ### Rodando backend
 Adicione o código de '/backend/db/db_sql.sql' a uma conexão MySQL.
 Crie um arquivo .env e o configure:
-```DB_HOST=
+```
+DB_HOST=
 DB_USER=
 DB_PASSWORD=
 DB_NAME=
@@ -25,7 +27,8 @@ PORT=
 
 Então, no terminal:
 
-```cd backend
+```
+cd backend
 node index.js
 # Se preferir usar nodemon
 npx nodemon index.js
