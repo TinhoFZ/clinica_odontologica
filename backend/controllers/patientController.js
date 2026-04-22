@@ -43,7 +43,7 @@ exports.registerPatient = (req, res) => {
             });
             const patient = { id: result.insertId };
             const payload = buildPatientPayload(patient);
-            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRESS_IN });
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN });
 
             res.status(201).json({ 
                 message: "Patient registered successfully", 
