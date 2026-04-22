@@ -2,12 +2,13 @@ const conn = require('../db/conn');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { buildPatientPayload } = require('../utils/payloadBuilder');
-const { logAction, logRequest } = require('../utils/logger');
+const { logAction } = require('../utils/logAction');
 
 exports.registerPatient = (req, res) => {
     bcrypt.hash(req.body.password_hash, 10, (err, hash) => {
         if (err) {
             logAction({
+                requestId: req.requestId,
                 action: 'ERROR_HASHING_PASSWORD',
                 entityType: 'patient',
                 entityId: null,
@@ -25,6 +26,7 @@ exports.registerPatient = (req, res) => {
         conn.query(sql, [name, cpf, email, phone_number, hash, address, birth_date], (err, result) => {
             if (err) {
                 logAction({
+                    requestId: req.requestId,
                     action: 'ERROR_REGISTERING_PATIENT',
                     entityType: 'patient',
                     entityId: null,
@@ -33,6 +35,7 @@ exports.registerPatient = (req, res) => {
                 return res.status(500).json({ error: "Error registering patient" });
             }
             logAction({
+                requestId: req.requestId,
                 action: 'PATIENT_REGISTERED',
                 entityType: 'patient',
                 entityId: result.insertId,

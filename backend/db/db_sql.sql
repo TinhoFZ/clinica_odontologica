@@ -39,23 +39,26 @@ CREATE TABLE patients(
 	FOREIGN KEY (dentist_id) REFERENCES dentists(dentist_id)
 ); 
 
-CREATE TABLE action_logs (
-	action_id CHAR(36) PRIMARY KEY, -- UUID
-    action VARCHAR(255),
-    entity_type ENUM('patient', 'dentist', 'appointment'),
-    entity_id INT,
-    status ENUM('SUCCESS', 'ERROR') NOT NULL,
-	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE request_logs (
-	id_request INT PRIMARY KEY AUTO_INCREMENT,
+	request_id INT PRIMARY KEY AUTO_INCREMENT,
 	method VARCHAR(10) NOT NULL,
 	route VARCHAR(255) NOT NULL,
 	status_code INT,
 	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE action_logs (
+	action_id CHAR(36) PRIMARY KEY, -- UUID
+	request_id INT,
+    action VARCHAR(255),
+    entity_type ENUM('patient', 'dentist', 'appointment'),
+    entity_id INT,
+    status ENUM('SUCCESS', 'ERROR') NOT NULL,
+	created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (request_id) REFERENCES request_logs(request_id)
+);
+
 SELECT * FROM patients;
 SELECT * FROM dentists;
 SELECT * FROM action_logs;
+SELECT * FROM request_logs;

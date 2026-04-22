@@ -3,10 +3,11 @@ const path = require('path');
 const cors = require('cors');
 require('dotenv').config();
 const conn = require('./db/conn');
-
+const requestLogger = require('./middleware/requestLogger');
 const app = express();
 
 app.use(cors());
+app.use(requestLogger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
