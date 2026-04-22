@@ -60,16 +60,33 @@ exports.loginPatient = (req, res) => {
     const { cpf, password_hash } = req.body;
 
     const sql = `
-    SELECT id, password_hash
+    SELECT patient_id, password_hash
     FROM patients
-    WHERE id_patient = ?
+    WHERE cpf = ?
     `
 
-    conn.query(sql, cpf, (err, result) => {
-        bcrypt.compare(password_hash, result[0].password_hash, (err, result) => {
-            console.log(result);
-            console.error(err);
-            if (err) {
+    conn.query(sql, cpf, (err, data) => {
+       
+        if (err) {
+            logAction({
+                requestId: req.requestId,
+                action: 'ERROR_REGISTERING_PATIENT',
+                entityType: 'patient',
+                entityId: null,
+                status: 'ERROR'
+            });
+            console.log(err);
+            return res.status(500).json({ error: "Error registering patient" });
+        }
+
+        if (!data) {
+            
+        }
+        
+
+        bcrypt.compare(password_hash, data[0].password_hash, (error, result) => {
+            
+            if (error) {
                 logAction({
                     requestId: req.requestId,
                     action: 'ERROR_AUTHENTICATING_PATIENT',
