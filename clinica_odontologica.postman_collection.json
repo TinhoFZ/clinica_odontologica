@@ -1,7 +1,7 @@
 {
   "info": {
     "_postman_id": "1a3b3545-6794-493f-a351-d3f46a72fab9",
-    "name": "Clinida odontológica",
+    "name": "clinica_odontologica",
     "description": "### Welcome to Postman! This is your first collection.\n\nCollections are your starting point for building and testing APIs. You can use this one to:\n\n• Group related requests  \n• Test your API in real-world scenarios  \n• Document and share your requests\n\nUpdate the name and overview whenever you’re ready to make it yours.\n\n[Learn more about Postman Collections.](https://learning.postman.com/docs/collections/collections-overview/)",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
     "_exporter_id": "52873350",
@@ -37,7 +37,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n    \"name\": \"Teste\",\n    \"cpf\": \"123\",\n    \"email\": \"a@a\",\n    \"phone_number\": \"4567\",\n    \"password_hash\": \"a\",\n    \"address\": \"Brasil\",\n    \"birth_date\": \"2024-12-25\"\n}",
+          "raw": "{\n    \"name\": \"Teste\",\n    \"cpf\": \"123\",\n    \"email\": \"a@a\",\n    \"phone_number\": \"123\",\n    \"password_hash\": \"123\",\n    \"address\": \"Brasil\",\n    \"birth_date\": \"2024-12-25\"\n}",
           "options": {
             "raw": {
               "language": "json"
@@ -84,6 +84,64 @@
           "path": [
             "dentists",
             "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login patient",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"cpf\": \"123\",\r\n    \"password_hash\": \"1234\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3001/patients/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "patients",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login dentist",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"cpf\": \"123\",\r\n    \"password_hash\": \"1234\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3001/patients/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3001",
+          "path": [
+            "patients",
+            "login"
           ]
         }
       },

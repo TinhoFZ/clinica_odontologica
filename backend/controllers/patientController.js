@@ -92,35 +92,45 @@ exports.loginPatient = (req, res) => {
             return res.status(404).json({ message: "Invalid credentials" });
         };
 
-        bcrypt.compare(password_hash, data[0].password_hash, (error, result) => {
+        const user = data[0];
+
+        bcrypt.compare(password_hash, user.password_hash, (error, result) => {
             
             if (error) {
                 logAction({
                     requestId: req.requestId,
                     action: 'ERROR_AUTHENTICATING_PATIENT',
                     entityType: 'patient',
-                    entityId: data[0].patient_id,
+                    entityId: user.patient_id,
                     status: 'DB_ERROR'
                 });
                 return res.status(401).json({ message: "Error authenticating patient"});
             };
+
             if (result) {
-                
                 logAction({
                     requestId: req.requestId,
                     action: 'PATIENT_AUTHENTICATED',
                     entityType: 'patient',
-                    entityId: data[0].patient_id,
+                    entityId: user.patient_id,
                     status: 'SUCCESS'
                 });
-                return res.status(200).json({ message: "Success authenticating patient"});
+
+                const patient = { patientId: user.patient_id }
+                const payload = buildPatientPayload(patient);
+                const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRES_IN })
+                return res.status(200).json({ 
+                    message: "Success authenticating patient",
+                    patientId: user.patient_id,
+                    token    
+                });
             };
 
             logAction({
                 requestId: req.requestId,
                 action: 'INVALID_PASSWORD',
                 entityType: 'patient',
-                entityId: data[0].patient_id,
+                entityId: user.patient_id,
                 status: 'USER_ERROR'
             });
             return res.status(401).json({ message: "Invalid credentials" });

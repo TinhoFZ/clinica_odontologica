@@ -78,3 +78,24 @@ Sempre adicione o port sendo usado no backend no inicio do URL:
     "specialty": "Everything"
 }
 ```
+### Login Patient
+*   Method: POST
+*   URL: /patients/login
+*   Body raw JSON:
+```
+{
+    "cpf": "123",
+    "password_hash": "123"
+}
+```
+
+### Login Dentist
+*   Method: POST
+*   URL: /dentists/login
+*   Body raw JSON:
+```
+{
+    "cpf": "123",
+    "password_hash": "a"
+}
+```x
