@@ -10,6 +10,7 @@ CREATE TABLE dentists(
     email VARCHAR(255) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
     specialty VARCHAR(255) NOT NULL,
+    description VARCHAR(500),
     phone_number VARCHAR(20) NOT NULL UNIQUE
 );
  

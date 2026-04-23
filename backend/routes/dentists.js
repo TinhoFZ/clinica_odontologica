@@ -6,5 +6,6 @@ const dentistController = require('../controllers/dentistController');
 
 router.post('/register', dentistController.registerDentist);
 router.post('/login', dentistController.loginDentist);
+router.get('/', dentistController.getDentists);
 
 module.exports = router;

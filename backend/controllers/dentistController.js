@@ -138,3 +138,27 @@ exports.loginDentist = (req, res) => {
         });
     });
 }
+
+exports.getDentists = (req, res) => {
+    const sql = `
+        SELECT name, specialty, description
+        FROM dentists
+    `
+
+    conn.query(sql, (err, data) => {
+        
+        if (err) {
+            logAction({
+                requestId: req.requestId,
+                action: 'ERROR_GETTING_DENTISTS',
+                entityType: 'dentist',
+                entityId: null, 
+                status: 'DB_ERROR'
+            });
+            console.log(err);
+            return res.status(40).json({ message: "Error getting dentists" });
+        };
+
+        res.json(data);
+    });
+}

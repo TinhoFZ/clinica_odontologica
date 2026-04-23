@@ -137,3 +137,27 @@ exports.loginPatient = (req, res) => {
         });
     });
 }
+/*
+exports.getPatients = (req, res) => {
+    const id = JWT
+    const sql = `
+        SELECT name, birth_date, medical_history
+        FROM patients
+        WHERE dentist_id = ?
+    `
+    conn.query(sql, id, (err, data) => {
+            if (err) {
+                logAction({
+                    requestId: req.requestId,
+                    action: 'ERROR_AUTHENTICATING_PATIENT',
+                    entityType: 'patient',
+                    entityId: user.patient_id,
+                    status: 'DB_ERROR'
+                });
+                return res.status(401).json({ message: "Error getting patients"});
+            };
+
+        res.json(data);
+    });
+}
+*/
