@@ -13,8 +13,9 @@ exports.registerPatient = (req, res) => {
                 action: 'ERROR_HASHING_PASSWORD',
                 entityType: 'patient',
                 entityId: null,
-                status: 'ERROR'
+                status: 'DB_ERROR'
             });
+            console.log(err);
             return res.status(500).json({ error: "Error hashing password" });
         }
         
@@ -31,7 +32,7 @@ exports.registerPatient = (req, res) => {
                     action: 'ERROR_REGISTERING_PATIENT',
                     entityType: 'patient',
                     entityId: null,
-                    status: 'ERROR'
+                    status: 'DB_ERROR'
                 });
                 console.log(err);
                 return res.status(500).json({ error: "Error registering patient" });
@@ -70,19 +71,26 @@ exports.loginPatient = (req, res) => {
         if (err) {
             logAction({
                 requestId: req.requestId,
-                action: 'ERROR_REGISTERING_PATIENT',
+                action: 'ERROR_AUTHENTICATING_PATIENT',
                 entityType: 'patient',
                 entityId: null,
-                status: 'ERROR'
+                status: 'DB_ERROR'
             });
             console.log(err);
-            return res.status(500).json({ error: "Error registering patient" });
-        }
+            return res.status(500).json({ error: "Error authenticating patient" });
+        };
 
-        if (!data) {
-            
-        }
-        
+
+        if (data.length === 0) {
+            logAction({
+                requestId: req.requestId,
+                action: 'PATIENT_NOT_FOUND',
+                entityType: 'patient',
+                entityId: null,
+                status: 'USER_ERROR'
+            });
+            return res.status(404).json({ message: "Patient not found" });
+        };
 
         bcrypt.compare(password_hash, data[0].password_hash, (error, result) => {
             
@@ -92,11 +100,12 @@ exports.loginPatient = (req, res) => {
                     action: 'ERROR_AUTHENTICATING_PATIENT',
                     entityType: 'patient',
                     entityId: result.insertId,
-                    status: 'ERROR'
+                    status: 'DB_ERROR'
                 });
                 return res.status(401).json({ message: "Error authenticating patient"});
             };
             if (result) {
+                
                 logAction({
                     requestId: req.requestId,
                     action: 'PATIENT_AUTHENTICATED',
@@ -106,14 +115,15 @@ exports.loginPatient = (req, res) => {
                 });
                 return res.status(200).json({ message: "Success authenticating patient"});
             };
+
             logAction({
                 requestId: req.requestId,
-                action: 'PATIENT_AUTHENTICATED',
+                action: 'INVALID_PASSWORD',
                 entityType: 'patient',
                 entityId: result.insertId,
-                status: 'SUCCESS'
+                status: 'USER_ERROR'
             });
-            
+            return res.status(401).json({ message: "Invalid password" });
         });
     });
 }
