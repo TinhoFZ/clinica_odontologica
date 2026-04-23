@@ -89,7 +89,7 @@ exports.loginPatient = (req, res) => {
                 entityId: null,
                 status: 'USER_ERROR'
             });
-            return res.status(404).json({ message: "Patient not found" });
+            return res.status(404).json({ message: "Invalid credentials" });
         };
 
         bcrypt.compare(password_hash, data[0].password_hash, (error, result) => {
@@ -99,7 +99,7 @@ exports.loginPatient = (req, res) => {
                     requestId: req.requestId,
                     action: 'ERROR_AUTHENTICATING_PATIENT',
                     entityType: 'patient',
-                    entityId: result.insertId,
+                    entityId: data[0].patient_id,
                     status: 'DB_ERROR'
                 });
                 return res.status(401).json({ message: "Error authenticating patient"});
@@ -110,7 +110,7 @@ exports.loginPatient = (req, res) => {
                     requestId: req.requestId,
                     action: 'PATIENT_AUTHENTICATED',
                     entityType: 'patient',
-                    entityId: result.insertId,
+                    entityId: data[0].patient_id,
                     status: 'SUCCESS'
                 });
                 return res.status(200).json({ message: "Success authenticating patient"});
@@ -120,10 +120,10 @@ exports.loginPatient = (req, res) => {
                 requestId: req.requestId,
                 action: 'INVALID_PASSWORD',
                 entityType: 'patient',
-                entityId: result.insertId,
+                entityId: data[0].patient_id,
                 status: 'USER_ERROR'
             });
-            return res.status(401).json({ message: "Invalid password" });
+            return res.status(401).json({ message: "Invalid credentials" });
         });
     });
 }

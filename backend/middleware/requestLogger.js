@@ -9,6 +9,7 @@ function requestLogger(req, res, next) {
     conn.query(sql, [req.method, req.originalUrl, null], (err, result) => {
         if (err) {
             console.log('Error in request_log: ', err);
+            next();
         }
 
         req.requestId = result.insertId;
@@ -27,8 +28,8 @@ function requestLogger(req, res, next) {
             });
         });
         console.log('Request logged successfully');
+        next();
     });
-    next();
 }
 
 module.exports = requestLogger;
